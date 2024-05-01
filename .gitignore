@@ -5,5 +5,5 @@ out
 **/__pycache__/*
 __pycache__
 .env
-.venv/*
+.venv3.11/*
 .pytest_cache
