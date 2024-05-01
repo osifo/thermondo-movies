@@ -67,7 +67,7 @@ def controller():
       raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="User could not be created")
 
 
-  @router.get("/{user_id}/movies", summary="List of movies rated by a user")
+  @router.get("/{user_id}/movies", summary="List movies rated by a user")
   async def list_user_movies(user_id: str) -> UserMoviesResponse:
     try:
       # user_movies = await movie_repository.get_rated_movies({"user_id": user_id })

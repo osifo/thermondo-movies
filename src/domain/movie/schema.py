@@ -1,15 +1,13 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Literal
 
 class MovieCreate(BaseModel):
   title: str = Field(min_length=2)
   year: str = Field(length=4)
   genre: str
-  runtime: str
+  duration: str
   language: str | None
-  year: str
   thumbnail_url: str | None
-  rating: float
+  rating: float = Field(min=0, max=10)
 
 class Movie(MovieCreate):
   id: str
@@ -29,4 +27,3 @@ class MovieListResponse(BaseModel):
 
   class Config:
     from_attributes = True
-

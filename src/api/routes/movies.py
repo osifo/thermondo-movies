@@ -1,7 +1,11 @@
 import traceback
 from fastapi import APIRouter, HTTPException, status
-
-from domain.movie.schema import MovieListResponse, MovieResponse, MovieCreate, Movie
+from domain.movie.schema import (
+  MovieListResponse, 
+  MovieResponse, 
+  MovieCreate
+)
+from domain.movie_rating.schema import MovieRatingCreate, MovieRatingResponse
 from domain.movie.exceptions import InvalidMovieError
 
 
@@ -43,8 +47,26 @@ def controller():
       raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="User could not be created")
 
 
-  @router.get("/{movie_slug}")
-  async def show_movie(movie_slug: str) -> MovieResponse:
+  @router.get("/{movie_id}")
+  async def show_movie(movie_id: str) -> MovieResponse:
+    try:  
+      # movie_data = await repository.show_movie(movie_slug)
+      return {
+        "success": True,
+        "data": "movie_data"
+      }
+
+    except InvalidMovieError as error:
+        stack_trace = traceback.format_exc()
+        raise HTTPException(status_code=error.code, detail=error.message)
+        # self.logger.info(error.message)
+    except Exception as error:
+      stack_trace = traceback.format_exc()
+      raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Movie could not be created")
+    
+
+  @router.post("/rate")
+  async def rate_movie(params: MovieRatingCreate) -> MovieRatingResponse:
     try:  
       # movie_data = await repository.show_movie(movie_slug)
       return {

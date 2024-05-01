@@ -11,20 +11,15 @@ class User(UserBase):
 
 class UserCreate(UserBase):
   password: str = Field(min_length=8, pattern='\d+\w+')
-
-class UserMovieRating(BaseModel):
-  movie: 'Movie'
-  user_rating: float
   
 class UserMovies(BaseModel):
   user: User
-  movies: list[UserMovieRating] | None
+  movies: list['MovieRating'] | None
 
 
 '''
 HTTP Response Schema
 '''
-
 class UserResponse(BaseModel):
   success: bool
   data: User
@@ -41,5 +36,5 @@ class UserMoviesResponse(BaseModel):
   data: UserMovies
 
 
-from domain.movie.schema import Movie
+from domain.movie_rating.schema import MovieRating
 User.model_rebuild()
