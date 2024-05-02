@@ -1,7 +1,6 @@
 from uuid import uuid4
 from datetime import datetime, timezone
 from domain.base import BaseModel
-from sqlalchemy.orm import relationship 
 from sqlalchemy import (
   Column, 
   String, 
@@ -27,14 +26,12 @@ class Movie(BaseModel):
   duration_mins = Column(Integer)
   language = Column(String(255))
   thumbnail_url = Column(String(255))
-  rating = Column(Float(3,1))
-  reviewer_count = Column(Integer)
+  rating = Column(Float(3,1), default=0.0, nullable=False)
+  reviewer_count = Column(Integer, default=0, nullable=False)
   is_active = Column(Boolean)
   created_at = Column(DateTime(timezone=True), index=True, nullable=False, default=datetime.now(timezone.utc))
   updated_at = Column(DateTime(timezone=True), onupdate=lambda: datetime.now(timezone.utc))
   
-  ratings = relationship("MovieRating", back_populates="movie")
-
   __table_args__ = (
     UniqueConstraint('title', 'year', name='unique_title_year'),
   )

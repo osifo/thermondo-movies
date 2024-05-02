@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 class MovieRatingCreate(BaseModel):
   user_id: str
@@ -6,9 +6,8 @@ class MovieRatingCreate(BaseModel):
   rating: float = Field(min=0, max=10)
 
 class MovieRating(BaseModel):
-  id: str
   movie: 'Movie'
-  user_movie_rating: float = Field(min=0, max=10)
+  user_rating: float = Field(min=0, max=10)
 
 '''
 HTTP Response Schema

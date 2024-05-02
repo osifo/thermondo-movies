@@ -3,9 +3,10 @@ from fastapi import Depends
 from sqlalchemy.orm import Session 
 from config import Config
 from domain.user.repository import IUserRepository
-from domain.user.schema import User , UserCreate
+from domain.user.schema import User , UserCreate, UserMovies
 from domain.user.exceptions import InvalidUserError
 from domain.user.model import User as UserModel
+from domain.movie_rating.schema import MovieRating
 
 
 class UserRepository(IUserRepository):
@@ -38,6 +39,8 @@ class UserRepository(IUserRepository):
       raise InvalidUserError
     return user
   
+  # TODO - implement pagination, ordering, filtering
   async def get_users(self, *filter_param: object) -> list[User]:
-    users = self.database.query(UserModel).all()
+    users = self.database.query(UserModel).order_by(UserModel.created_at.desc()).all()
     return users
+  

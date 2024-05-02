@@ -1,16 +1,16 @@
 import traceback
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Depends, status
 from domain.user.exceptions import InvalidUserError
 from domain.user.schema import (
   UserCreate, 
-  User, 
   UserListResponse, 
   UserResponse, 
   UserMoviesResponse
 )
 from domain.user.repository import IUserRepository
+from domain.movie.repository import IMovieRepository
 
-def controller(user_repository: IUserRepository):
+def controller(user_repository = Depends(IUserRepository),  movie_repository = Depends(IMovieRepository)):
   router = APIRouter(prefix="/users", tags=["users"])
 
   @router.get("/")
@@ -71,10 +71,12 @@ def controller(user_repository: IUserRepository):
   @router.get("/{user_id}/movies", summary="List movies rated by a user")
   async def list_user_movies(user_id: str) -> UserMoviesResponse:
     try:
-      # user_movies = await movie_repository.get_user_movies_ratings({"user_id": user_id })
+      user = await user_repository.get_user_by_id(user_id)
+      user_movies = await movie_repository.get_movies_rated_by_user(user_id)
+
       return {
         "success": True,
-        "data": "user_movies"
+        "data": { 'user': user, 'movies': user_movies }
       }
 
     except InvalidUserError as error:

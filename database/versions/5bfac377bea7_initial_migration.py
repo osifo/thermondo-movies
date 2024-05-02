@@ -2,7 +2,7 @@
 
 Revision ID: 5bfac377bea7
 Revises: 
-Create Date: 2024-05-02 10:15:54.637918
+Create Date: 2024-05-01 12:25:46.081094
 
 """
 from typing import Sequence, Union
@@ -28,7 +28,8 @@ def upgrade() -> None:
     sa.Column('duration_mins', sa.Integer(), nullable=True),
     sa.Column('language', sa.String(length=255), nullable=True),
     sa.Column('thumbnail_url', sa.String(length=255), nullable=True),
-    sa.Column('rating', sa.Float(precision=3, asdecimal=1), nullable=True),
+    sa.Column('rating', sa.Float(precision=3, asdecimal=1), nullable=False),
+    sa.Column('reviewer_count', sa.Integer(), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),

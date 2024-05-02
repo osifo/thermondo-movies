@@ -7,6 +7,7 @@ from domain.movie.schema import Movie, MovieCreate
 from domain.movie_rating.schema import MovieRating, MovieRatingCreate
 from domain.movie.exceptions import InvalidMovieError
 from domain.movie.model import Movie as MovieModel
+from domain.user.model import User as UserModel
 from domain.movie_rating.model import MovieRating as MovieRatingModel
 
 
@@ -41,18 +42,42 @@ class MovieRepository(IMovieRepository):
     movies = self.database.query(MovieModel).order_by(MovieModel.created_at.desc()).all()
     return movies
   
+  # TODO - implement pagination, ordering, filtering
+  async def get_movies_rated_by_user(self, user_id: str) -> list[MovieRating]:
+    ratings_result = self.database.query(
+      MovieModel, MovieRatingModel.rating.label("user_rating")
+    ).join(
+      MovieRatingModel
+    ).join(
+      UserModel
+    ).where(
+      MovieRatingModel.user_id == user_id,
+      UserModel.id == user_id
+    ).order_by(MovieRatingModel.created_at.desc()).all()
+
+    movie_ratings = [dict({'movie': movie, 'user_rating': user_rating}) for movie, user_rating in ratings_result]
+
+    return movie_ratings
+  
   async def rate_movie(self, rating_params: MovieRatingCreate) -> MovieRating:
     try:
-      with self.database.begin():
-        movie_to_rate = await self.get_movie(rating_params.movie_id)
-        new_rating = MovieRatingModel(**rating_params.model_dump())
+      movie_to_rate = await self.get_movie(rating_params.movie_id)
+      new_rating = MovieRatingModel(**rating_params.model_dump())
+      movie_to_rate.reviewer_count = int(movie_to_rate.reviewer_count) + 1
+      updated_movie_rating = (int(movie_to_rate.rating) + int(new_rating.rating)) / movie_to_rate.reviewer_count
+      movie_to_rate.rating = updated_movie_rating
 
-        updated_movie_rating = (movie_to_rate.rating + new_rating.rating) / (movie_to_rate.reviewer_count + 1)
+      self.database.add(new_rating)
+      self.database.commit()
+      self.database.refresh(new_rating)
+      self.database.refresh(movie_to_rate)
 
-        self.database.add(new_rating)
-        self.database.commit()
-        self.database.refresh(new_rating)
-        return new_rating
-    except Exception as e:
+      return { 
+        'user_rating': new_rating.rating, 
+        'movie': movie_to_rate 
+      }
+       
+    except Exception as error:
         # Rollback the transaction if an error occurs
+        print(error)
         self.database.rollback()

@@ -19,3 +19,7 @@ class IMovieRepository(ABC):
   def rate_movie(self, rating_params: MovieRatingCreate) -> MovieRating:
     """fetch movie details"""
     raise NotImplementedError
+  
+  def get_movies_rated_by_user(self, user_id: str) -> MovieRating:
+    """fetch movie details"""
+    raise NotImplementedError

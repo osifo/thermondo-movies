@@ -5,7 +5,7 @@ import unittest
 
 from server import app
 from tests.utils.TestBase import TestBase
-from tests.fixtures.users import (
+from tests.fixtures.user import (
   user as user_fixture,
   create_user, 
   create_users
