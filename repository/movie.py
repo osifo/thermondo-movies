@@ -47,6 +47,8 @@ class MovieRepository(IMovieRepository):
         movie_to_rate = await self.get_movie(rating_params.movie_id)
         new_rating = MovieRatingModel(**rating_params.model_dump())
 
+        updated_movie_rating = (movie_to_rate.rating + new_rating.rating) / (movie_to_rate.reviewer_count + 1)
+
         self.database.add(new_rating)
         self.database.commit()
         self.database.refresh(new_rating)

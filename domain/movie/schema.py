@@ -4,15 +4,14 @@ class MovieCreate(BaseModel):
   title: str = Field(min_length=2)
   year: str = Field(length=4)
   genre: str
-  duration: str
+  duration_mins: int
   language: str | None
   thumbnail_url: str | None
   rating: float = Field(min=0, max=10)
 
 class Movie(MovieCreate):
   id: str
-  slug: str
-  
+  reviewer_count: int = Field(..., exclude=True)
 
 '''
 HTTP Response Schema
