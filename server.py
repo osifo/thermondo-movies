@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from api.router import AppRouter
 from config import Config, DatabaseConfig
 
-app = FastAPI()
+app = FastAPI(title="Thermondo Movies API", version="1.0.0")
 
 @app.get('/')
 async def api_info():

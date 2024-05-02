@@ -21,8 +21,8 @@ class MovieRouteTest(TestBase):
     movie_params = movie_fixture()
     movie_params['title'] = "Parasite"
     movie_params['year'] = "2021"
-    print(f'movie_params ==== {movie_params}')
-    response = client.post("/movies", json=movie_params)
+
+    response = client.post("/v1/movies", json=movie_params)
     response_json = response.json()
     response_data = response_json.get('data')
 
@@ -39,7 +39,7 @@ class MovieRouteTest(TestBase):
     movie_params = movie_fixture()
     movie_params['title'] = existing_movie.title
     movie_params['year'] = existing_movie.year
-    response = client.post("/movies", json=movie_params)
+    response = client.post("/v1/movies", json=movie_params)
     response_json = response.json()
       
     self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -50,7 +50,7 @@ class MovieRouteTest(TestBase):
   async def test_get_movie(self):
     test_movie = await create_movie(self.dbConnection)
 
-    response = client.get(f"/movies/{test_movie.id}")
+    response = client.get(f"/v1/movies/{test_movie.id}")
     response_json = response.json()
     response_data = response_json.get('data')
 
@@ -64,7 +64,7 @@ class MovieRouteTest(TestBase):
     movie_count = 5
     await create_movies(self.dbConnection, movie_count=movie_count)
 
-    response = client.get("/movies")
+    response = client.get("/v1/movies")
     response_json = response.json()
     response_data = response_json.get('data')
 

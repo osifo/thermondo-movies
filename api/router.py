@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
-from api.routes import movies, users
+from api.routes.v1 import movies, users
 from repository.user import UserRepository
 from repository.movie import MovieRepository
 class AppRouter():

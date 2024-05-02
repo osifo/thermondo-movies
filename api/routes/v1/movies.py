@@ -11,7 +11,7 @@ from domain.movie.schema import (
 
 
 def controller(repository = Depends(IMovieRepository)):
-  router = APIRouter(prefix="/movies", tags=["movies"])
+  router = APIRouter(prefix="/v1/movies", tags=["movies"])
 
   @router.get("/")
   async def index(filter_params: str | None = None) -> MovieListResponse:

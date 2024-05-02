@@ -11,7 +11,7 @@ from domain.user.repository import IUserRepository
 from domain.movie.repository import IMovieRepository
 
 def controller(user_repository = Depends(IUserRepository),  movie_repository = Depends(IMovieRepository)):
-  router = APIRouter(prefix="/users", tags=["users"])
+  router = APIRouter(prefix="/v1/users", tags=["users"])
 
   @router.get("/")
   async def list_users(filter_params: str | None = None) -> UserListResponse:

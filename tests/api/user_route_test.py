@@ -22,7 +22,7 @@ class UserRouteTest(TestBase):
     user_params['email'] = "testuser@gmail.com"
     user_params['password'] = "TESTpassword"
 
-    response = client.post("/users", json=user_params)
+    response = client.post("/v1/users", json=user_params)
     response_json = response.json()
     response_data = response_json.get('data')
 
@@ -35,7 +35,8 @@ class UserRouteTest(TestBase):
     user_params = user_fixture()
     user_params['email'] = "testusergmail@"
     user_params['email'] = "TEST2password"
-    response = client.post("/users", json=user_params)
+
+    response = client.post("/v1/users", json=user_params)
     response_json = response.json()
 
     self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -44,7 +45,7 @@ class UserRouteTest(TestBase):
   async def test_get_user(self):
     test_user = await create_user(self.dbConnection)
 
-    response = client.get(f"/users/{test_user.id}")
+    response = client.get(f"/v1/users/{test_user.id}")
     response_json = response.json()
     response_data = response_json.get('data')
 
@@ -57,7 +58,7 @@ class UserRouteTest(TestBase):
     user_count = 5
     await create_users(self.dbConnection, user_count=user_count)
 
-    response = client.get("/users")
+    response = client.get("/v1/users")
     response_json = response.json()
     response_data = response_json.get('data')
 
