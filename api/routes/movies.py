@@ -28,8 +28,9 @@ def controller(repository = Depends(IMovieRepository)):
         # self.logger.info(error.message)
     except Exception as error:
       stack_trace = traceback.format_exc()
+      print(error)
       print(f"error:\n{error}\ndetails:{stack_trace}")
-      raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="User could not be created")
+      raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Movie could not be fetched")
 
 
   @router.post("/")
@@ -46,8 +47,7 @@ def controller(repository = Depends(IMovieRepository)):
     except Exception as error:
       stack_trace = traceback.format_exc()
       print(error)
-      print(stack_trace)
-      raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="User could not be created")
+      raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Movie could not be created")
 
 
   @router.get("/{movie_id}")

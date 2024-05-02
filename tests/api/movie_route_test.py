@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from fastapi.responses import Response
-from fastapi import status
+from fastapi import status, HTTPException
 import pytest
 
 from server import app
@@ -21,7 +21,7 @@ class MovieRouteTest(TestBase):
     movie_params = movie_fixture()
     movie_params['title'] = "Parasite"
     movie_params['year'] = "2021"
-
+    print(f'movie_params ==== {movie_params}')
     response = client.post("/movies", json=movie_params)
     response_json = response.json()
     response_data = response_json.get('data')
@@ -31,22 +31,19 @@ class MovieRouteTest(TestBase):
     self.assertEqual(response_data.get('year'), movie_params.get('year'))
 
 
-  @pytest.mark.skip("invalid movie")
   async def test_create_invalid_movie(self):
     '''
     Creates a movie with duplicate title/year
     '''
     existing_movie = await create_movie(self.dbConnection)
-
     movie_params = movie_fixture()
-    movie_params['title'] = existing_movie.get('title')
-    movie_params['year'] = existing_movie.get('year')
-
+    movie_params['title'] = existing_movie.title
+    movie_params['year'] = existing_movie.year
     response = client.post("/movies", json=movie_params)
     response_json = response.json()
-
-    self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
-    self.assertEqual(response_json.get('success'), False)
+      
+    self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+    self.assertEqual(response_json.get('detail'), 'Movie could not be created')
 
 
   @pytest.mark.skip(reason="invalid movie")

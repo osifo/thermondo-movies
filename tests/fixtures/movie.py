@@ -15,13 +15,14 @@ def movie():
   year = faker.year()
   genre = random.choice(["Action", "Drama", "Sci-fi"])
   language = random.choice(["English", "German", "French"])
+  duration_mins = random.choice([140, 205, 110])
   
   return {
     'title': title,
     'year': year,
     'genre': genre,
+    'duration_mins': duration_mins,
     'language': language,
-    'rating': 0
   }
 
 async def create_movie(db: Session):

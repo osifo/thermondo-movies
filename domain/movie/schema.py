@@ -6,8 +6,8 @@ class MovieCreate(BaseModel):
   genre: str
   duration_mins: int
   language: str | None
-  thumbnail_url: str | None
-  rating: float = Field(min=0, max=10)
+  thumbnail_url: str | None = Field(None)
+  rating: float = Field(0.0, min=0, max=10)
 
 class Movie(MovieCreate):
   id: str
