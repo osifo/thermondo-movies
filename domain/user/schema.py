@@ -6,11 +6,11 @@ class UserBase(BaseModel):
   email: EmailStr
 
 class User(UserBase):
-  id: int
+  id: str
   is_active: bool | None
 
 class UserCreate(UserBase):
-  password: str = Field(min_length=8, pattern='\d+\w+')
+  password: str = Field(min_length=8, pattern='[\d\w]+*?')
   
 class UserMovies(BaseModel):
   user: User
@@ -23,6 +23,9 @@ HTTP Response Schema
 class UserResponse(BaseModel):
   success: bool
   data: User
+
+  class Config:
+    from_attributes = True
 
 class UserListResponse(BaseModel):
   success: bool

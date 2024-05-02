@@ -6,6 +6,7 @@ class MovieRatingCreate(BaseModel):
   rating: float = Field(min=0, max=10)
 
 class MovieRating(BaseModel):
+  id: str
   movie: 'Movie'
   user_movie_rating: float = Field(min=0, max=10)
 

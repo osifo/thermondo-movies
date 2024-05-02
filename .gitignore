@@ -7,3 +7,6 @@ __pycache__
 .env
 .venv3.11/*
 .pytest_cache
+alembic.ini
+.env
+.DS_Store

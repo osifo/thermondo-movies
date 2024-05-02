@@ -1,12 +1,13 @@
 import traceback
 from fastapi import APIRouter, HTTPException, status
+from domain.movie_rating.schema import MovieRatingCreate, MovieRatingResponse
+from domain.movie.exceptions import InvalidMovieError
+from domain.movie.repository import IMovieRepository
 from domain.movie.schema import (
   MovieListResponse, 
   MovieResponse, 
   MovieCreate
 )
-from domain.movie_rating.schema import MovieRatingCreate, MovieRatingResponse
-from domain.movie.exceptions import InvalidMovieError
 
 
 def controller():
@@ -50,7 +51,7 @@ def controller():
   @router.get("/{movie_id}")
   async def show_movie(movie_id: str) -> MovieResponse:
     try:  
-      # movie_data = await repository.show_movie(movie_slug)
+      # movie_data = await repository.get_movie(movie_id=movie_id)
       return {
         "success": True,
         "data": "movie_data"
@@ -67,11 +68,12 @@ def controller():
 
   @router.post("/rate")
   async def rate_movie(params: MovieRatingCreate) -> MovieRatingResponse:
-    try:  
-      # movie_data = await repository.show_movie(movie_slug)
+    try:
+      
+      # movie_rating = await repository.rate_movie(rating_params=params)
       return {
         "success": True,
-        "data": "movie_data"
+        "data": "movie_rating"
       }
 
     except InvalidMovieError as error:

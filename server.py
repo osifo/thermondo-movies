@@ -1,10 +1,6 @@
 from fastapi import FastAPI
-
-import sys; 
-print("===================")
-print(sys.path)
-
 from api.router import AppRouter
+from config import Config, DatabaseConfig
 
 app = FastAPI()
 
@@ -15,4 +11,5 @@ async def api_info():
     "data": "Thermondo Movie API 1.0.0"
   }
 
-AppRouter.setup(app)
+databaseConfig: DatabaseConfig = next(Config.get_database(Config.APP_ENV))
+AppRouter.setup(app, databaseConfig.connection)
