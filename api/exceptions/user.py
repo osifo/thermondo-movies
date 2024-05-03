@@ -1,3 +1,4 @@
+import logging, traceback
 from fastapi.responses import JSONResponse
 from typing import Callable
 from fastapi import FastAPI, Request, status
@@ -9,12 +10,18 @@ from domain.user.exceptions import (
 )
 
 def users_exception_handler(app: FastAPI):
+    logger = logging.getLogger(__name__)
+
     def exception_handler(
       status_code: int, exception_details: str
     ) -> Callable[[Request, UserError], JSONResponse]:
       error = exception_details
 
       async def handle_exception(_: Request, exc: UserError) -> JSONResponse:
+        stack_trace = traceback.format_exc(limit=1)
+        logger.debug(error)
+        logger.error(stack_trace)
+
         return JSONResponse(
             status_code=status_code, content={"error": error}
         )

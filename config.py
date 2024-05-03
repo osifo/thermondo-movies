@@ -5,9 +5,12 @@ from sqlalchemy.exc import PendingRollbackError
 from dotenv import load_dotenv
 from enum import Enum
 from typing import Literal
+import logging
+from logging.handlers import SysLogHandler
 
 load_dotenv()
 
+# TODO =  move these sections into separate files in /config dir
 class DatabaseConfig():
   def __init__(self, connection, session, engine) -> None:
     self.connection = connection
@@ -24,6 +27,8 @@ class Config:
   })
   PROJECT_NAME = os.getenv("PROJECT_NAME")
   API_VERSION = os.getenv("API_VERSION")
+  PAPERTRAIL_HOST = os.getenv("PAPERTRAIL_HOST")
+  PAPERTRAIL_HOST = os.getenv("PAPERTRAIL_HOST")
 
   def __get_database_url( env: str):
     if env == Config.Environment.DEV.value:
@@ -61,3 +66,25 @@ class Config:
     finally:
       db_connection.close()
 
+class Logger():
+  @staticmethod
+  def setup():
+    logger = logging.getLogger(Config.PROJECT_NAME)
+    logger.setLevel(logging.DEBUG)
+    handler = SysLogHandler(address=(Config.PAPERTRAIL_HOST, Config.PAPERTRAIL_PORT))
+    logger.addHandler(handler)
+
+  @staticmethod
+  def setup_dev():
+    logging.basicConfig(
+      level=logging.DEBUG,
+      format="%(asctime)s %(levelname)s %(message)s",
+      datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+
+if Config.APP_ENV == Config.Environment.DEV.value:
+  Logger.setup_dev()
+else:
+  Logger.setup()
+  
