@@ -1,13 +1,18 @@
+class UserError(Exception):
+  def __init__(self, message: str = "Something went wrong while performing this user operation.", name: str = "Users"):
+        self.message = message
+        self.name = name
+        super().__init__(self.message, self.name)
 
-from fastapi import status
-import json
 
-class InvalidUserError(Exception):
-  message = "The user parameters provided are invalid."
-  code = status.HTTP_400_BAD_REQUEST
+class DuplicateUserError(UserError):
+    """A user with this email already exists."""
+    pass
 
-  def __str__(self):
-    return json.dumps({
-      "message": InvalidUserError.message,
-      "code": InvalidUserError.code
-    })
+class InvalidUserError(UserError):
+    """Invalid user information was supplied."""
+    pass
+
+class UserNotFoundError(UserError):
+    """No matching user was found."""
+    pass

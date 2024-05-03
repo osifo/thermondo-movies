@@ -1,15 +1,18 @@
 from fastapi import FastAPI
 from api.router import AppRouter
+from api.exceptions import AppException
 from config import Config, DatabaseConfig
 
-app = FastAPI(title="Thermondo Movies API", version="1.0.0")
+app = FastAPI(title=Config.PROJECT_NAME, version=Config.API_VERSION)
 
 @app.get('/')
-async def api_info():
+async def __api_info():
   return {
     "success": True,
-    "data": "Thermondo Movie API 1.0.0"
+    "data": f"{Config.PROJECT_NAME} - {Config.API_VERSION}"
   }
 
 databaseConfig: DatabaseConfig = next(Config.get_database(Config.APP_ENV))
+
 AppRouter.setup(app, databaseConfig.connection)
+AppException.setup(app)

@@ -39,7 +39,7 @@ class UserRouteTest(TestBase):
     response = client.post("/v1/users", json=user_params)
     response_json = response.json()
 
-    self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
   async def test_get_user(self):
@@ -67,10 +67,7 @@ class UserRouteTest(TestBase):
     self.assertGreaterEqual(len(response_data), user_count)
   
   
-  @unittest.skip("to be implemented")  # TODO - write test for rating a movie
-  async def test_rate_movie(self):
-    pass
-
-  @unittest.skip("to be implemented") # TODO - write test for fetching user movies 
+  # TODO - write test for fetching the movies rated by a user 
+  @unittest.skip("to be implemented")
   async def test_get_user_movies(self):
     pass

@@ -22,6 +22,8 @@ class Config:
     'STAGING': 'staging', 
     'PROD': 'production'
   })
+  PROJECT_NAME = os.getenv("PROJECT_NAME")
+  API_VERSION = os.getenv("API_VERSION")
 
   def __get_database_url( env: str):
     if env == Config.Environment.DEV.value:

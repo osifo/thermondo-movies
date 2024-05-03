@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from fastapi.responses import Response
-from fastapi import status, HTTPException
+from fastapi import status
+from sqlalchemy.exc import IntegrityError
 import pytest
 
 from server import app
@@ -31,7 +32,7 @@ class MovieRouteTest(TestBase):
     self.assertEqual(response_data.get('year'), movie_params.get('year'))
 
 
-  async def test_create_invalid_movie(self):
+  async def test_create_duplicate_movie(self):
     '''
     Creates a movie with duplicate title/year
     '''
@@ -39,11 +40,9 @@ class MovieRouteTest(TestBase):
     movie_params = movie_fixture()
     movie_params['title'] = existing_movie.title
     movie_params['year'] = existing_movie.year
-    response = client.post("/v1/movies", json=movie_params)
-    response_json = response.json()
-      
-    self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-    self.assertEqual(response_json.get('detail'), 'Movie could not be created')
+    
+    with self.assertRaises(IntegrityError):
+      client.post("/v1/movies", json=movie_params)
 
 
   @pytest.mark.skip(reason="invalid movie")
