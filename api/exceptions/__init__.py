@@ -4,6 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from .movie import movies_exception_handler
 from .user import users_exception_handler
+from .authentication import auth_exception_handler
 
 class AppException():
   @staticmethod
@@ -12,6 +13,7 @@ class AppException():
 
     movies_exception_handler(app)
     users_exception_handler(app)
+    auth_exception_handler(app)
 
     # TODO - Write custom handler for HTTPException (to handle 500s)
 

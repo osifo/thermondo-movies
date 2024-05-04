@@ -25,7 +25,7 @@ def movies_exception_handler(app: FastAPI):
       logger.error(stack_trace)
       
       return JSONResponse(
-          status_code=status_code, content={"detail": "error"}
+          status_code=status_code, content={"error": error}
       )
     return handle_exception
 

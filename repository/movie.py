@@ -1,4 +1,3 @@
-import re
 from fastapi import Depends
 from sqlalchemy.orm import Session 
 from sqlalchemy.exc import IntegrityError
@@ -53,7 +52,7 @@ class MovieRepository(IMovieRepository):
   
   # TODO - implement pagination, ordering, filtering
   async def get_movies_rated_by_user(self, user_id: str) -> list[MovieRating]:
-      ratings_result = self.database.query(
+    ratings_result = self.database.query(
         MovieModel, MovieRatingModel.rating.label("user_rating")
       ).join(
         MovieRatingModel
@@ -64,9 +63,9 @@ class MovieRepository(IMovieRepository):
         UserModel.id == user_id
       ).order_by(MovieRatingModel.created_at.desc()).all()
 
-      movie_ratings = [dict({'movie': movie, 'user_rating': user_rating}) for movie, user_rating in ratings_result]
+    movie_ratings = [dict({'movie': movie, 'user_rating': user_rating}) for movie, user_rating in ratings_result]
 
-      return movie_ratings
+    return movie_ratings
   
   async def rate_movie(self, rating_params: MovieRatingCreate) -> MovieRating:
     try:

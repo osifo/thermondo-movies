@@ -10,3 +10,5 @@ pydantic-settings
 pyright
 aiohttp
 orjson
+python-jose[cryptography]
+passlib[bcrypt]

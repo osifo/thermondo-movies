@@ -1,7 +1,6 @@
 import traceback
 from fastapi import APIRouter, HTTPException, Depends, status
 from domain.movie_rating.schema import MovieRatingCreate, MovieRatingResponse
-from domain.movie.exceptions import InvalidMovieError
 from domain.movie.repository import IMovieRepository
 from domain.movie.schema import (
   MovieListResponse, 

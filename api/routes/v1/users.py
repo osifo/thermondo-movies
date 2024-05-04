@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
+from domain.user.repository import IUserRepository
+from domain.movie.repository import IMovieRepository
 from domain.user.schema import (
   UserCreate, 
   UserListResponse, 
   UserResponse, 
   UserMoviesResponse
 )
-from domain.user.repository import IUserRepository
-from domain.movie.repository import IMovieRepository
 
 def controller(user_repository = Depends(IUserRepository),  movie_repository = Depends(IMovieRepository)):
   router = APIRouter(prefix="/v1/users", tags=["users"])

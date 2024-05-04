@@ -21,7 +21,7 @@ class UserRepository(IUserRepository):
 
   async def create_user(self, user_params: UserCreate) -> User:
     try:
-      # TODO - move password-creation logic to a utils/auth
+      # TODO - move password-creation logic to auth service
       hashed_password = bcrypt.hashpw(user_params.password.encode('utf-8'), bcrypt.gensalt())
       new_user = UserModel(
         **user_params.model_dump(exclude=['password']), 

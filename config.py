@@ -22,13 +22,19 @@ class Config:
   Environment = Enum('Environment', {
     'TEST': 'test', 
     'DEV': 'development', 
-    'STAGING': 'staging', 
+    'STAGING': 'staging',
     'PROD': 'production'
   })
   PROJECT_NAME = os.getenv("PROJECT_NAME")
   API_VERSION = os.getenv("API_VERSION")
   PAPERTRAIL_HOST = os.getenv("PAPERTRAIL_HOST")
-  PAPERTRAIL_HOST = os.getenv("PAPERTRAIL_HOST")
+  PAPERTRAIL_PORT = os.getenv("PAPERTRAIL_PORT")
+  PAPERTRAIL_PORT = os.getenv("PAPERTRAIL_PORT")
+
+  # TODO - use OpenSSL implementation
+  AUTH_SECRET_KEY = os.getenv("AUTH_SECRET_KEY")
+  AUTH_ALGORITHM = os.getenv("AUTH_ALGORITHM")
+  AUTH_TOKEN_DURATION_MINS = os.getenv("AUTH_TOKEN_DURATION_MINS")
 
   def __get_database_url( env: str):
     if env == Config.Environment.DEV.value:
