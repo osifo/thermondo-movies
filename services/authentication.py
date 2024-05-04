@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime, timezone
 from passlib.context import CryptContext
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from domain.authentication.schema import UserTokenData
 from domain.authentication.exceptions import AuthenticationError, InvalidTokenData, AuthTokenExpired
 from config import Config
@@ -19,16 +19,12 @@ def get_current_user(token: str):
 
     if not token_data:
       raise InvalidTokenData
-
-    current_time = int(datetime.now(timezone.utc).timestamp())
-    token_expiry_time = int(token_data.get("exp"))
-    if token_expiry_time < current_time:
-      raise AuthTokenExpired
     
     return token_data
-    
-  except JWTError:
-    raise AuthenticationError 
+  except  ExpiredSignatureError:
+    raise AuthTokenExpired
+  except JWTError as error:
+    raise AuthenticationError(message=error)
 
 def generate_access_token(token_data: UserTokenData):
   try:

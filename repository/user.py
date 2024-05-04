@@ -23,7 +23,7 @@ class UserRepository(IUserRepository):
 
   async def create_user(self, token: str, user: UserCreate) -> User:
     user_data: UserTokenData = AuthService.get_current_user(token=token)
-    if(user_data.get("role") == UserRole.Basic.value):
+    if(user_data.get("role") != UserRole.Admin.value):
       raise UserPermissionError
     
     try:
@@ -44,6 +44,7 @@ class UserRepository(IUserRepository):
     
     except IntegrityError as error:
       if "duplicate entry" in str(error).lower():
+        self.database.rollback()
         raise DuplicateUserError
       else:
         raise error

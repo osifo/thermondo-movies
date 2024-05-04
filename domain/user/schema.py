@@ -1,6 +1,5 @@
-from fastapi import Header
 from pydantic import BaseModel, EmailStr, Field
-
+from typing import Literal
 class UserBase(BaseModel):
   firstname: str = Field(min_length=2)
   lastname: str = Field(min_length=2)
@@ -12,6 +11,7 @@ class User(UserBase):
 
 class UserCreate(UserBase):
   password: str = Field(min_length=8, pattern='[\d\w]+*?')
+  role: Literal["basic", "admin"]
 
 class UserMovies(BaseModel):
   user: User

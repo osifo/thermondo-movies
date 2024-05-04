@@ -35,6 +35,7 @@ class MovieRepository(IMovieRepository):
     
     except IntegrityError as error:
       if "duplicate entry" in str(error).lower():
+        self.database.rollback()
         raise DuplicateMovieError
       else:
         raise error
@@ -86,6 +87,7 @@ class MovieRepository(IMovieRepository):
       } 
     except IntegrityError as error:
       if "duplicate entry" in str(error).lower():
+        self.database.rollback()
         raise DuplicateMovieRatingError
       else:
         raise error
