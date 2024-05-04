@@ -1,0 +1,66 @@
+# TODO - use wait-for-it.sh to run alembic migration i docker, after db is available
+services:
+  api:
+    container_name: thermondo-movies
+    build:
+      context: .
+    ports:
+      - 4000:4000
+    command: uvicorn server:app --port=4000 --host=0.0.0.0 --reload
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1 # Prevents Python from writing pyc files.
+      PYTHONUNBUFFERED: 1 #Keeps Python from buffering stdout and stderr
+    volumes:
+      - .:/app
+    networks:
+      movie-network: null
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      movie-network: null
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: db/password.txt
+networks:
+  movie-network:
+    name: thermondo-movie-network
+    driver: bridge
+
+# TODO - setup redis caching
+# redis:
+#   container_name: edgex-redis
+#   hostname: edgex-redis
+#   image: redis:7.0-alpine
+#   networks:
+#     edgex-network: null
+#   ports:
+#     - mode: ingress
+#       host_ip: 127.0.0.1
+#       target: 6379
+#       published: "6379"
+#       protocol: tcp
+#   read_only: true
+#   restart: always
+#   security_opt:
+#     - no-new-privileges:true
+#   user: root:root
+#   volumes:
+#     - type: volume
+#       source: db-data
+#       target: /data
+#       volume: {}

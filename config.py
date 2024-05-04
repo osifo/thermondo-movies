@@ -43,7 +43,8 @@ class Config:
         username=os.getenv("DB_USERNAME"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
-        port=os.getenv("DB_PORT")
+        port=os.getenv("DB_PORT"),
+        host=os.getenv("DB_HOST")
       )
     if env == Config.Environment.TEST.value:
       return 'sqlite:///./movies_test.db'

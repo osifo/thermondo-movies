@@ -9,6 +9,6 @@ python-dotenv
 pydantic-settings
 pyright
 aiohttp
-orjson
+orjson # TODO - Switch to orjson for faster json serialization
 python-jose[cryptography]
 passlib[bcrypt]
