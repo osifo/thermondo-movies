@@ -1,3 +1,4 @@
+from fastapi import Header
 from pydantic import BaseModel, EmailStr, Field
 
 class UserBase(BaseModel):
@@ -11,7 +12,7 @@ class User(UserBase):
 
 class UserCreate(UserBase):
   password: str = Field(min_length=8, pattern='[\d\w]+*?')
-  
+
 class UserMovies(BaseModel):
   user: User
   movies: list['MovieRating'] | None

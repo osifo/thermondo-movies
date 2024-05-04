@@ -8,3 +8,9 @@ class AuthenticationError(Exception):
 class UnauthorizedUserError(AuthenticationError):
     """Invalid username or password"""
     pass
+class InvalidTokenData(AuthenticationError):
+    """Invalid token data"""
+    pass
+class AuthTokenExpired(AuthenticationError):
+    """Authentication token has expired."""
+    pass

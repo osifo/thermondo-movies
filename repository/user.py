@@ -6,8 +6,10 @@ from sqlalchemy.exc import IntegrityError
 from config import Config
 from domain.user.repository import IUserRepository
 from domain.user.schema import User , UserCreate
-from domain.user.exceptions import InvalidUserError
-from domain.user.model import User as UserModel
+from domain.user.exceptions import InvalidUserError, UserPermissionError
+from domain.user.model import User as UserModel, UserRole
+import services.authentication as AuthService
+from domain.authentication.schema import UserTokenData
 from domain.user.exceptions import (
   UserNotFoundError,
   InvalidUserError,
@@ -19,12 +21,16 @@ class UserRepository(IUserRepository):
   def __init__(self, database: Session = Depends(Config.get_database)) -> None:
     self.database = database
 
-  async def create_user(self, user_params: UserCreate) -> User:
+  async def create_user(self, token: str, user: UserCreate) -> User:
+    user_data: UserTokenData = AuthService.get_current_user(token=token)
+    if(user_data.get("role") == UserRole.Basic.value):
+      raise UserPermissionError
+    
     try:
       # TODO - move password-creation logic to auth service
-      hashed_password = bcrypt.hashpw(user_params.password.encode('utf-8'), bcrypt.gensalt())
+      hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
       new_user = UserModel(
-        **user_params.model_dump(exclude=['password']), 
+        **user.model_dump(exclude=['password']), 
         hashed_password=hashed_password
       )
       

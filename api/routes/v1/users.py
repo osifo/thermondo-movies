@@ -1,14 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 from domain.user.repository import IUserRepository
 from domain.movie.repository import IMovieRepository
+from typing import Annotated
 from domain.user.schema import (
   UserCreate, 
   UserListResponse, 
   UserResponse, 
-  UserMoviesResponse
+  UserMoviesResponse,
 )
 
-def controller(user_repository = Depends(IUserRepository),  movie_repository = Depends(IMovieRepository)):
+def controller(
+    user_repository = Depends(IUserRepository),
+    movie_repository = Depends(IMovieRepository),
+  ):
   router = APIRouter(prefix="/v1/users", tags=["users"])
 
   # TODO - implement pagination and filtering 
@@ -21,8 +25,8 @@ def controller(user_repository = Depends(IUserRepository),  movie_repository = D
     }
   
   @router.post("/")
-  async def create_user(user_param: UserCreate) -> UserResponse:
-    user = await user_repository.create_user(user_params=user_param)
+  async def create_user(user_param: UserCreate, auth_token: Annotated[str, Header()]) -> UserResponse:
+    user = await user_repository.create_user(token=auth_token,user=user_param)
     return {
       "success": True,
       "data": user

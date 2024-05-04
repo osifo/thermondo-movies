@@ -2,7 +2,12 @@ import logging, traceback
 from fastapi.responses import JSONResponse
 from typing import Callable
 from fastapi import FastAPI, Request, status
-from domain.authentication.exceptions import AuthenticationError,  UnauthorizedUserError
+from domain.authentication.exceptions import (
+  AuthenticationError, 
+  UnauthorizedUserError, 
+  InvalidTokenData,
+  AuthTokenExpired,
+)
 
 
 def auth_exception_handler(app: FastAPI):
@@ -27,5 +32,18 @@ def auth_exception_handler(app: FastAPI):
     exc_class_or_status_code = UnauthorizedUserError,
     handler = exception_handler(
         status.HTTP_401_UNAUTHORIZED, "Incorrect email or password"
+    )
+  )
+
+  app.add_exception_handler(
+    exc_class_or_status_code = InvalidTokenData,
+    handler = exception_handler(
+        status.HTTP_401_UNAUTHORIZED, "Invalid token data."
+    )
+  )
+  app.add_exception_handler(
+    exc_class_or_status_code = AuthTokenExpired,
+    handler = exception_handler(
+        status.HTTP_401_UNAUTHORIZED, "Authentication token has expired."
     )
   )
