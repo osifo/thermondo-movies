@@ -52,7 +52,7 @@ First you'd need to run migrations
 
 ### Running tests:
 
-To run tests, run: `python -m APP_ENV=test pytest tests/`
+To run tests, run: `python3 -m APP_ENV=test pytest tests/`
 
 ### Areas for Improvement
 
