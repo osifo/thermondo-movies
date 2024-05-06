@@ -52,15 +52,15 @@ First you'd need to run migrations
 
 ### Running tests:
 
-To run tests, run: `python -m APP_ENV=test pytest tests/`
+To run tests, run: `python3 -m APP_ENV=test pytest tests/`
 
 ### Areas for Improvement
 
-[ ] Finish setup of CI/CD using github workflows
-[ ] Use [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to eliminate the need to run migrations manually during docker setup.
-[ ] Complete redis setup and integrate with the movie rating logic
-[ ] Write tests for the repositories and models
-[ ] Use orjson to improve json serialization speed
+- [ ] Finish setup of CI/CD using github workflows
+- [ ] Use [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to eliminate the need to run migrations manually during docker setup.
+- [ ] Complete redis setup and integrate with the movie rating logic
+- [ ] Write tests for the repositories and models
+- [ ] Use orjson to improve json serialization speed
 
 ### Other notes
 
