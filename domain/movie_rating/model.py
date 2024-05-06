@@ -18,6 +18,7 @@ class MovieRating(BaseModel):
             kwargs['id'] = str(uuid4())
         super().__init__(**kwargs)
 
+  # TODO  - Take out id and use movie_id + user_id as composite key.
   id = Column(String(40), primary_key=True, index=True)
   movie_id = Column(String(40), ForeignKey("movies.id"))
   user_id = Column(String(40), ForeignKey("users.id"))

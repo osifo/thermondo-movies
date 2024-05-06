@@ -16,6 +16,3 @@ class InvalidUserError(UserError):
 class UserNotFoundError(UserError):
     """No matching user was found."""
     pass
-class UserPermissionError(UserError):
-    """You do not have the permission for this operation."""
-    pass

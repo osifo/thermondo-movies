@@ -8,7 +8,7 @@ class IAuthenticationRepository(ABC):
     raise NotImplementedError
   
   @abstractmethod
-  def logout_user(self, email: str):
-    """Logout user"""
+  def signup_user(self, email: str):
+    """Signup user"""
     raise NotImplementedError
   

@@ -7,13 +7,13 @@ from repository.authentication import AuthenticationRepository
 class AppRouter():
   @staticmethod
   def setup(app: FastAPI, dbConnection: Session) -> None:
-    userRepo = UserRepository(database=dbConnection)
-    movieRepo = MovieRepository(database=dbConnection)
-    authRepo = AuthenticationRepository(database=dbConnection)
+    user_repo = UserRepository(database=dbConnection)
+    movie_repo = MovieRepository(database=dbConnection)
+    auth_repo = AuthenticationRepository(database=dbConnection, user_repository=user_repo)
 
-    users_controller = users.controller(user_repository=userRepo, movie_repository=movieRepo) 
-    movies_controller = movies.controller(repository=movieRepo)
-    auth_controller = authentication.controller(auth_repository=authRepo)
+    users_controller = users.controller(user_repository=user_repo, movie_repository=movie_repo) 
+    movies_controller = movies.controller(repository=movie_repo)
+    auth_controller = authentication.controller(auth_repository=auth_repo)
 
     app.include_router(users_controller)
     app.include_router(movies_controller)

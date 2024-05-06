@@ -7,6 +7,7 @@ from domain.authentication.exceptions import (
   UnauthorizedUserError, 
   InvalidTokenData,
   AuthTokenExpired,
+  UnauthorizedActionError
 )
 
 
@@ -24,7 +25,7 @@ def auth_exception_handler(app: FastAPI):
       logger.error(stack_trace)
       
       return JSONResponse(
-          status_code=status_code, content={"error": error}
+          status_code=status_code, content={"error": error }
       )
     return handle_exception
 
@@ -32,6 +33,12 @@ def auth_exception_handler(app: FastAPI):
     exc_class_or_status_code = UnauthorizedUserError,
     handler = exception_handler(
         status.HTTP_401_UNAUTHORIZED, "Incorrect email or password"
+    )
+  )
+  app.add_exception_handler(
+    exc_class_or_status_code = AuthenticationError,
+    handler = exception_handler(
+        status.HTTP_401_UNAUTHORIZED, "User token could not be verified. Login and try again."
     )
   )
 
@@ -45,5 +52,11 @@ def auth_exception_handler(app: FastAPI):
     exc_class_or_status_code = AuthTokenExpired,
     handler = exception_handler(
         status.HTTP_401_UNAUTHORIZED, "Authentication token has expired."
+    )
+  )
+  app.add_exception_handler(
+    exc_class_or_status_code = UnauthorizedActionError,
+    handler = exception_handler(
+        status.HTTP_401_UNAUTHORIZED, "You do not have the permissions for this action."
     )
   )
