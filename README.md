@@ -30,45 +30,47 @@ don't want to check coding conventions only.
 ### How to setup the app locally
 
 1. Clone the repository
-2. copy the `.env.example` and `alembic.ini.example` files to new `.env` and `alembic.ini` files respectively.
+2. In the app's root directory, copy the `.env.example` and `alembic.ini.example` files to new `.env` and `alembic.ini` files respectively.
 3. Update the files from step 2 above.
 
 - in `.env`, populate values for `DB_USERNAME` and `DB_PASSWORD`
 - in `alembic.ini` update the `sqlalchemy.url` key, populating the values for `username` and `password`
 
 4. Install docker-desktop (if you do not have docker installed)
-5. Setup the application: run `docker compose up --build`. (You might need to use sudo for this)
-6. You should be able to access the app on the port displayed in your terminal (should be localhost:4000).
+5. While in the app root directory, setup the application by runnning: `docker compose up --build`. (You might need to use sudo for this)
+6. You should be able to access the app on the port displayed in your terminal (this should be localhost:4000).
 
 ### How to run the app
 
 First you'd need to run migrations
-
-1. run `docker ps` to get the id of the container running the api
-2. access the terminal of this container to run database migration
-   a. to access the terminal, run `docker exec -it <container_id> bash`
-   b. once inside the container you should be in the /app dir), run migrations using: `alembic upgrade head`
+1. Run `docker ps` to get the id of the container running the api
+2. Run database migration by takingn the following steps:
+   - a. run `docker exec -it <container_id> bash` to access the container terminal.
+   - b. once inside the container (you should be in the /app dir), run migrations using: `alembic upgrade head`
 3. You can test the app's functionality via the swagger documentation available on the `/docs` route (e.g `http://localhost:4000/docs`).
 
 ### How to test the features
 
 **NOTE**
-_Two user roles exist: `admin` and `basic`; Admin users can create other users_
-_The `/create_user` endpoint requires the user to be authenticated and authorized._
+- _Two user roles exist: `admin` and `basic`; Admin users can create other users._
+- _The `/create_user` endpoint requires the user to be authenticated and authorized._
 
 1. Sign up using the `/signup` endpoint
 2. With your email, id and token in the response, you can then perform other actions.
 
 ### Running tests:
 
-To run tests, run: `python3 -m APP_ENV=test pytest tests/`
+To run tests
+- install test requirements, run: `pip install -r requirements_test.txt`
+- run test cases, run: `python3 -m APP_ENV=test pytest tests/`
 
 ### Areas for Improvement
-
-- [ ] Finish setup of CI/CD using github workflows
+- [ ] Complete integration test converage for every routem cover the edge cases
+- [ ] Write tests for the repositories and models
+- [ ] Setup CI/CD using github workflows
+- [ ] Add pyright in CI step to check that best typing practices are adhered to.
 - [ ] Use [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to eliminate the need to run migrations manually during docker setup.
 - [ ] Complete redis setup and integrate with the movie rating logic
-- [ ] Write tests for the repositories and models
 - [ ] Use orjson to improve json serialization speed
 
 ### Other notes
