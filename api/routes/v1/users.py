@@ -28,7 +28,6 @@ def controller(
   @router.post("/", summary="Create User")
   @authenticator.is_admin
   async def create_user(user_param: UserCreate) -> UserResponse:
-    # TODO - use `@is_authorized` as a decorator for this route
     user = await user_repository.create_user(user=user_param)
     return {
       "success": True,
