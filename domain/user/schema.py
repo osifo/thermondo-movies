@@ -8,6 +8,7 @@ class UserBase(BaseModel):
 class User(UserBase):
   id: str
   is_active: bool | None
+  role: str
 
 class UserCreate(UserBase):
   password: str = Field(min_length=8, pattern='[\d\w]+*?')

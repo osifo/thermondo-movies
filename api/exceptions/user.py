@@ -6,8 +6,7 @@ from domain.user.exceptions import (
   UserError,
   UserNotFoundError,
   InvalidUserError,
-  DuplicateUserError,
-  UserPermissionError
+  DuplicateUserError
 )
 
 def users_exception_handler(app: FastAPI):
@@ -46,12 +45,5 @@ def users_exception_handler(app: FastAPI):
       exc_class_or_status_code=DuplicateUserError,
       handler=exception_handler(
           status.HTTP_400_BAD_REQUEST, "A user with this email already exists."
-      )
-    )
-    
-    app.add_exception_handler(
-      exc_class_or_status_code = UserPermissionError,
-      handler = exception_handler(
-          status.HTTP_401_UNAUTHORIZED, "You do not have the permission for this operation."
       )
     )

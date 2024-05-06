@@ -14,3 +14,7 @@ class InvalidTokenData(AuthenticationError):
 class AuthTokenExpired(AuthenticationError):
     """Authentication token has expired."""
     pass
+
+class UnauthorizedActionError(AuthenticationError):
+    """You do not have the permissions for this action."""
+    pass

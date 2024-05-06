@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from domain.user.repository import IUserRepository
 from domain.movie.repository import IMovieRepository
-from typing import Annotated
+import services.authentication as authenticator
+
 from domain.user.schema import (
   UserCreate, 
   UserListResponse, 
@@ -24,9 +25,11 @@ def controller(
       "data": user_data
     }
   
-  @router.post("/")
-  async def create_user(user_param: UserCreate, auth_token: Annotated[str, Header()]) -> UserResponse:
-    user = await user_repository.create_user(token=auth_token,user=user_param)
+  @router.post("/", summary="Create User")
+  @authenticator.is_admin
+  async def create_user(user_param: UserCreate) -> UserResponse:
+    # TODO - use `@is_authorized` as a decorator for this route
+    user = await user_repository.create_user(user=user_param)
     return {
       "success": True,
       "data": user
