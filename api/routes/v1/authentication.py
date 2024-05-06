@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from domain.authentication.repository import IAuthenticationRepository
-from domain.authentication.schema import UserLogin, AuthResponse
+from domain.authentication.schema import UserLogin, AuthResponse, SignupResponse
 from domain.user.schema import UserCreate
 
 def controller(auth_repository = Depends(IAuthenticationRepository)):
   router = APIRouter(prefix="/v1/auth", tags=["authentication"])
 
   @router.post('/signup')
-  async def signup(user_param: UserCreate) -> AuthResponse:
+  async def signup(user_param: UserCreate) -> SignupResponse:
     user_token = await auth_repository.signup_user(user=user_param)
     return {
       "success": True,

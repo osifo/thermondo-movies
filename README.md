@@ -27,7 +27,7 @@ don't want to check coding conventions only.
 
 # Solution Notes
 
-### How to launch the app
+### How to setup the app locally
 
 1. Clone the repository
 2. copy the `.env.example` and `alembic.ini.example` files to new `.env` and `alembic.ini` files respectively.
@@ -40,7 +40,7 @@ don't want to check coding conventions only.
 5. Setup the application: run `docker compose up --build`. (You might need to use sudo for this)
 6. You should be able to access the app on the port displayed in your terminal (should be localhost:4000).
 
-### How to test the functionality
+### How to run the app
 
 First you'd need to run migrations
 
@@ -48,7 +48,16 @@ First you'd need to run migrations
 2. access the terminal of this container to run database migration
    a. to access the terminal, run `docker exec -it <container_id> bash`
    b. once inside the container you should be in the /app dir), run migrations using: `alembic upgrade head`
-3. You test the app's functionality via the swagger documentation available on the `/docs` route (e.g `http://localhost:4000/docs`).
+3. You can test the app's functionality via the swagger documentation available on the `/docs` route (e.g `http://localhost:4000/docs`).
+
+### How to test the features
+
+**NOTE**
+_Two user roles exist: `admin` and `basic`; Admin users can create other users_
+_The `/create_user` endpoint requires the user to be authenticated and authorized._
+
+1. Sign up using the `/signup` endpoint
+2. With your email, id and token in the response, you can then perform other actions.
 
 ### Running tests:
 

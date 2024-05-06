@@ -9,6 +9,7 @@ from domain.user.exceptions import UserNotFoundError
 from domain.authentication.exceptions import UnauthorizedUserError
 from domain.authentication.schema import UserTokenData
 from domain.user.schema import UserCreate
+from domain.authentication.schema import UserSignup
 import services.authentication as AuthService
 from repository.user import UserRepository
 
@@ -30,8 +31,9 @@ class AuthenticationRepository(IAuthenticationRepository):
     token_data: UserTokenData = { 'id': valid_user.id, 'firstname': valid_user.firstname, 'role': valid_user.role }
     return AuthService.generate_access_token(token_data)
   
-  async def signup_user(self, user: UserCreate) -> str:
+  async def signup_user(self, user: UserCreate) -> UserSignup:
     user = await self.user_repository.create_user(user=user)
-    
     token_data: UserTokenData = { 'id': user.id, 'firstname': user.firstname, 'role': user.role }
-    return AuthService.generate_access_token(token_data)
+    auth_token = AuthService.generate_access_token(token_data)
+
+    return {'user': user, 'auth_token': auth_token}
