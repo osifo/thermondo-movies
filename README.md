@@ -1,8 +1,6 @@
-# Backend Senior Coding Challenge 🍿
 
-In this challenge, I designed and implemented a robust
-backend system that handles user interactions and provides movie ratings. We
-don't want to check coding conventions only.
+This project demonstrates a deisgn and implementartion of a robust
+backend system that handles user interactions and provides movie ratings. 
 
 ## ✅ Requirements
 
@@ -16,16 +14,10 @@ don't want to check coding conventions only.
 - [x] Implement a basic profile where users can view their rated movies.
 - [x] Include unit tests to ensure the reliability of your code.
 - [x] Ensure proper error handling and validation of user inputs.
-
-## ✨ Bonus Points
-
 - [x] Implement authentication and authorization mechanisms for users.
 - [x] Provide documentation for your API endpoints using tools like Swagger.
 - [x] Implement logging to record errors and debug information.
-- [ ] Implement caching mechanisms to improve the rating system's performance.
-- [ ] Implement CI/CD quality gates.
 
-# Solution Notes
 
 ### How to setup the app locally
 
